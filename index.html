@@ -142,7 +142,7 @@ function removeEvent(date){if(!confirm("Quitar este evento?"))return;showSaving(
 function viewMember(id){state.viewingMember=id;state.selectedWeek=0;state.view="memberView";render();}
 function editMember(id){state.avail=state.allData[id]?JSON.parse(JSON.stringify(state.allData[id])):{};state.editingAs=id;state.selectedWeek=0;state.view="register";render();}
 function slSave(){clearTimeout(window._slT);window._slT=setTimeout(function(){apiCall({action:"saveSetlist",setlist:state.setlist}).catch(function(){});},1000);}
-function addGroup(){state.setlist.push({name:"Grupo nuevo",songs:[]});slSave();render();}
+function addGroup(){state.setlist.push({name:"Lista "+(state.setlist.length+1),songs:[]});slSave();render();}
 function removeGroup(gi){if(!confirm("Quitar este grupo?"))return;state.setlist.splice(gi,1);slSave();render();}
 function updateGroupName(gi,v){state.setlist[gi].name=v;slSave();}
 function addSong(gi){var tEl=document.getElementById("nst"+gi);var aEl=document.getElementById("nsa"+gi);var t=tEl?tEl.value.trim():"";var a=aEl?aEl.value.trim():"";if(!t)return;state.setlist[gi].songs.push({title:t,artist:a,done:false});if(tEl)tEl.value="";if(aEl)aEl.value="";slSave();render();}
