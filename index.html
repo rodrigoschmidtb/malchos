@@ -141,7 +141,7 @@ function addEvent(){var dateEl=document.getElementById("new-event-date");var nam
 function removeEvent(date){if(!confirm("Quitar este evento?"))return;showSaving(true);apiCall({action:"removeEvent",date:date}).then(function(r){state.events=r.events||[];showSaving(false);render();}).catch(function(e){showSaving(false);alert("Error: "+e.message);});}
 function viewMember(id){state.viewingMember=id;state.selectedWeek=0;state.view="memberView";render();}
 function editMember(id){state.avail=state.allData[id]?JSON.parse(JSON.stringify(state.allData[id])):{};state.editingAs=id;state.selectedWeek=0;state.view="register";render();}
-function slSave(){clearTimeout(window._slT);window._slT=setTimeout(function(){apiCall({action:"saveSetlist",setlist:state.setlist}).catch(function(){});},1000);}
+function slSave(){clearTimeout(window._slT);window._slT=setTimeout(function(){apiCall({action:"saveSetlist",setlist:state.setlist}).catch(function(e){state.error="ERROR al guardar el setlist: "+e.message+". NO hagas mas cambios; refrescá la página y avisá al admin.";render();alert("⚠️ "+state.error);});},1000);}
 function addGroup(){var input=document.getElementById("new-list-name");var name=input?input.value.trim():"";if(!name)name="Lista "+(state.setlist.length+1);state.setlist.push({name:name,songs:[]});if(input)input.value="";slSave();render();} function saveListName(gi){var input=document.getElementById("edit-list-"+gi);var v=input?input.value.trim():"";if(!v)return;state.setlist[gi].name=v;state.editingListName=-1;slSave();render();}
 function removeGroup(gi){if(!confirm("Quitar este grupo?"))return;state.setlist.splice(gi,1);slSave();render();}
 function updateGroupName(gi,v){state.setlist[gi].name=v;slSave();}
